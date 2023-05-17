@@ -44,6 +44,7 @@ module.exports = class Account {
         this.client.on('loggedOn', () => login(this.client, account));
         this.client.on('error', (err) => error(err, this.client, this.logOnOptions));
         this.client.chat.on('friendMessage', (msg) => message(msg, this.client));
+        this.client.on('friendRelationship', (steamID, rel) => friend(steamID, rel, client));
 
     }
 
