@@ -1,0 +1,29 @@
+{
+  "name": "steamaccountmanager",
+  "version": "1.0.0",
+  "description": "SAM (Steam Account Manager) allows you to control your multiple Steam accounts, idle hours and game cards on them!",
+  "main": "src/app.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheM-Dev/SteamAccountManager.git"
+  },
+  "keywords": [],
+  "author": "TheM-Dev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheM-Dev/SteamAccountManager/issues"
+  },
+  "homepage": "https://github.com/TheM-Dev/SteamAccountManager#readme",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "colors": "^1.4.0",
+    "dayjs": "^1.11.7",
+    "dotenv": "^16.0.3",
+    "steam-totp": "^2.1.2",
+    "steam-tradeoffer-manager": "^2.10.5",
+    "steam-user": "^4.28.3",
+    "steamcommunity": "^3.44.3",
+    "steamid": "^2.0.0"
+  }
+}
