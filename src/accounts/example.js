@@ -8,6 +8,7 @@ module.exports = {
     masterID: 'masterSteamID64', //SteamID64 of an account that will be the master of this one (can control everything by Steam chat)
     rerouteMessages: true, //Send all messages coming to the bots to master account
 
+    acceptFriendRequests: true, //Autoaccepting friend requests
     respondToOffers: true, //Currently only accepting offers where we don't give anything
     respondToMessages: true, //Responding to messages with set texts (src/dict/yourlanguage.js)
 
