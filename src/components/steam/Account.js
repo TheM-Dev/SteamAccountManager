@@ -1,5 +1,11 @@
+require('dotenv/config');
+
 const log = require('../../utils/log');
 const { errorCodes } = require('./enums');
+const config = require('../../config');
+const { steam } = require('../../dict/english');
+const api = require('./api');
+const SteamAPI = new api(process.env.STEAMAPIKEY);
 
 const SteamUser = require('steam-user');
 const SteamTotp = require('steam-totp');
@@ -27,7 +33,7 @@ module.exports = class Account {
             accountName: account.login,
             password: account.password,
             rememberPassword: true,
-            machineName,
+            machineName: config.steam.machineName,
             clientOS: 16,
             dontRememberMachine: false,
             rememberPassword: true
@@ -51,13 +57,19 @@ module.exports = class Account {
                     log(2, 'steam_login', `Couldnt log-in! Error: Rate Limit Exceeded`, account.login);
                     let rateLimitCooldown = Math.floor(Math.random() * (120 - 45 + 1)) + 45;
                     log(3, 'steam_login', `Retrying in ${rateLimitCooldown} seconds!`, account.login);
-                    setTimeout(() => { this.client.relog(); }, rateLimitCooldown * 1000);
+                    setTimeout(() => {
+                        if(account.sharedSecret) this.logOnOptions.twoFactorCode = SteamTotp.generateAuthCode(account.sharedSecret);
+                        this.client.logOn(this.logOnOptions);
+                    }, rateLimitCooldown * 1000);
                     break;
                 case "Error: LoggedInElsewhere":
                     log(2, 'steam_login', `Couldnt log-in! Error: Logged In Elsewhere!`, account.login);
                     let LoggedInElsewhereCooldown = Math.floor(Math.random() * (360 - 120 + 1)) + 120;
                     log(3, 'steam_login', `Retrying in ${LoggedInElsewhereCooldown} seconds!`, account.login);
-                    setTimeout(() => { this.client.relog(); }, LoggedInElsewhereCooldown * 1000);
+                    setTimeout(() => {
+                        if(account.sharedSecret) this.logOnOptions.twoFactorCode = SteamTotp.generateAuthCode(account.sharedSecret);
+                        this.client.logOn(this.logOnOptions);
+                    }, LoggedInElsewhereCooldown * 1000);
                     break;
                 case "Already logged on, cannot log on again":
                     log(2, 'steam_login', `Couldnt log-in! Error: We are already logged in!`, account.login);
@@ -67,7 +79,19 @@ module.exports = class Account {
                     break;
                 default:
                     log(2, 'steam_login', `Couldnt log-in! Error: ${errorCodes[err.eresult]}`, account.login);
+                    let otherErrorsCooldown = Math.floor(Math.random() * (120 - 60 + 1)) + 60;
+                    log(3, 'steam_login', `Retrying in ${otherErrorsCooldown} seconds!`, account.login);
+                    setTimeout(() => {
+                        if(account.sharedSecret) this.logOnOptions.twoFactorCode = SteamTotp.generateAuthCode(account.sharedSecret);
+                        this.client.logOn(this.logOnOptions);
+                    }, otherErrorsCooldown * 1000);
             }
+        });
+
+        this.client.chat.on('friendMessage', async (message) => {
+            const details = await SteamAPI.getPlayerSummaries(message.steamid_friend.getSteamID64());
+            if(message.message.includes('lobbyinvite')) return steam.gameInviteReceived(this.client, details.personaname, message);
+            return steam.friendMessageReceived(this.client, details.personaname, message);
         });
 
     }
