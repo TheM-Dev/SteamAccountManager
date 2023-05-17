@@ -19,6 +19,16 @@ module.exports = {
                 message.steamid_friend,
                 `Unfortunately, I cannot respond to your message, because I'm currently using SteamAccountManager, idling hours AND/OR collectible Steam cards!`
             );
+        },
+        friendRequestReceived: (client, nickname, steamID) => {
+            client.chat.sendFriendMessage(
+                steamID,
+                `Hello ${nickname}, Thanks for adding me! :steamhappy:`
+            );
+            return client.chat.sendFriendMessage(
+                steamID,
+                `Unfortunately, I cannot respond to your message, because I'm currently using SteamAccountManager, idling hours AND/OR collectible Steam cards!`
+            );
         }
     }
 }
