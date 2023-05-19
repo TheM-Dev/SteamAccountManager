@@ -1,7 +1,7 @@
 const log = require('../../../utils/log');
 const { errorCodes } = require('../utils/enums');
 
-module.exports = (err, client, logOnOptions) => {
+module.exports = (err, client, logOnOptions, account) => {
     switch(err){
         case "Error: RateLimitExceeded":
             log(2, 'steam_login', `Couldnt log-in! Error: Rate Limit Exceeded`, account.login);
