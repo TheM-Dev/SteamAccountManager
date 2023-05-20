@@ -29,6 +29,6 @@ module.exports = {
                 steamID,
                 `Unfortunately, I cannot respond to your message, because I'm currently using SteamAccountManager, idling hours AND/OR collectible Steam cards!`
             );
-        }
+        },
     }
 }

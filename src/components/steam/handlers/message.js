@@ -7,5 +7,6 @@ const SteamAPI = new api(process.env.STEAMAPIKEY);
 module.exports = async (message, client) => {
     const details = await SteamAPI.getPlayerSummaries(message.steamid_friend.getSteamID64());
     if(message.message.includes('lobbyinvite')) return steam.gameInviteReceived(client, details.personaname, message);
+    if(message.message.includes('tradeoffer')) return;
     return steam.friendMessageReceived(client, details.personaname, message);
 }
