@@ -9,9 +9,14 @@ module.exports = {
     rerouteMessages: true, //Send all messages coming to the bots to master account
 
     acceptFriendRequests: true, //Autoaccepting friend requests
-    respondToOffers: true, //Currently only accepting offers where we don't give anything
     respondToMessages: true, //Responding to messages with set texts (src/dict/yourlanguage.js)
 
     idle: true, //Idle hours in game
-    games: [ 730 ] //Games list, you can get the IDs on https://steamdb.info
+    games: [ 730 ], //Games list, you can get the IDs on https://steamdb.info
+
+    tradeoffers: {
+        autoAccept: {
+            giftOffers: true, //Auto accept offers where we don't give out any items
+        }
+    }
 }
