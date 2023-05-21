@@ -8,7 +8,7 @@ pm2.connect(async function(err) {
 
     await pm2.start({
         script: 'src/app.js',
-        name: 'api'
+        name: 'steamaccountmanager'
     }, function(err, apps) {
         if (err) {
             console.error(err)
@@ -16,9 +16,9 @@ pm2.connect(async function(err) {
         }
     });
     setInterval(() => {
-        pm2.describe('api', function(err, proc) {
+        pm2.describe('steamaccountmanager', function(err, proc) {
             if(err) return err;
             console.log(`Process is using ${(proc[0].monit?.memory / 1000000).toFixed(1)}MB of memory and ${(proc[0].monit?.cpu).toFixed(1)}% of CPU!`)
-        })
-    }, 1000)
+        });
+    }, 1000);
 });
