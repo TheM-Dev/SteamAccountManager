@@ -11,6 +11,7 @@ server.app.post('/statuses/process/update', server.loggingMiddleware, (req, res)
     let { cpu, memory } = req.body;
     res.sendStatus(200)
 });
+
 server.app.get('/api/accounts', server.loggingMiddleware, (req, res) => {
     res.json(accounts);
 });
