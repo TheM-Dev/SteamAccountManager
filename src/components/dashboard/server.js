@@ -1,9 +1,7 @@
 const express = require('express');
 const log = require('../../utils/log');
 const path = require('path');
-const bodyParser = require('body-parser')
-
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 module.exports = class webServer {
     constructor(){

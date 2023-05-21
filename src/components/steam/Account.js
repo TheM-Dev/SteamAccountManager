@@ -18,11 +18,6 @@ const handleOffer = require('./handlers/tradeoffers');
 module.exports = class Account {
     constructor(account){
 
-        if(!account.login) return log(3, 'steam_login', 'No login provided in account file!');
-        if(!account.password) return log(3, 'steam_login', `No password provided in account file!`, account.login);
-        if(!account.sharedSecret) log(2, 'steam_login', `No shared secret provided in account file!`, account.login);
-        if(!account.identitySecret) log(2, 'steam_login', `No identity secret provided in account file!`, account.login);
-
         this.client = new SteamUser();
         this.community = new SteamCommunity();
         this.manager = new TradeOfferManager({
