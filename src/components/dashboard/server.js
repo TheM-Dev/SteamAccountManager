@@ -19,6 +19,6 @@ module.exports = class webServer {
         this.app.get('/accounts', this.loggingMiddleware, (req, res) => res.render('accounts'));
         this.app.get('/games', this.loggingMiddleware, (req, res) => res.render('games'));
 
-        this.app.listen(5555, () => log(1, 'WEB_SERVER', `Web dashboard running on http://localhost:5555/`));
+        this.app.listen(5555, () => log(1, 'web_server', `Web dashboard running on http://localhost:5555/`));
     }
 }
