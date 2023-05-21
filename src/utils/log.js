@@ -16,10 +16,10 @@ module.exports = (logLevel, module, log, account) => {
         }
     } else {
         switch(logLevel){
-            case 1: console.log(colors.yellow.bold(currentDate), colors.yellow(account.toLowerCase()), colors.green.bold(module.toUpperCase()), colors.green(log)); break;
-            case 2: console.log(colors.yellow.bold(currentDate), colors.yellow(account.toLowerCase()), colors.red.bold(module.toUpperCase()), colors.red(log)); break;
-            case 3: console.log(colors.yellow.bold(currentDate), colors.yellow(account.toLowerCase()), colors.magenta.bold(module.toUpperCase()), colors.magenta(log)); break;
-            default: console.log(colors.yellow.bold(currentDate), colors.yellow(account.toLowerCase()), colors.yellow.bold(module.toUpperCase()), colors.yellow(log)); break;
+            case 1: console.log(colors.yellow.bold(currentDate), colors.green.bold(module.toUpperCase()), colors.yellow(account.toLowerCase()), colors.green(log)); break;
+            case 2: console.log(colors.yellow.bold(currentDate), colors.red.bold(module.toUpperCase()), colors.yellow(account.toLowerCase()), colors.red(log)); break;
+            case 3: console.log(colors.yellow.bold(currentDate), colors.magenta.bold(module.toUpperCase()), colors.yellow(account.toLowerCase()), colors.magenta(log)); break;
+            default: console.log(colors.yellow.bold(currentDate), colors.yellow.bold(module.toUpperCase()), colors.yellow(account.toLowerCase()), colors.yellow(log)); break;
         }
     }
     
