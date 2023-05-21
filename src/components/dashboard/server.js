@@ -1,6 +1,7 @@
 const express = require('express');
 const log = require('../../utils/log');
 const path = require('path');
+const bodyParser = require('body-parser')
 
 const bodyParser = require('body-parser')
 
@@ -9,7 +10,7 @@ module.exports = class webServer {
         this.app = express();
         this.app.set('view engine', 'ejs');
         this.app.set('views', path.join(__dirname, '/views'));
-        this.jsonParser = bodyParser.json();
+        this.app.use(bodyParser.json());
 
         this.loggingMiddleware = (req, res, next) => { log(0, 'web_server', `New request on ${req.url}`); next() };
 
