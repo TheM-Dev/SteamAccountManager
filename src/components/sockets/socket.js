@@ -30,13 +30,6 @@ module.exports = class SocketServer {
             res.sendFile(path.join(__dirname, '../dashboard/games.html'));
         });
 
-        this.io.on('connection', (socket) => {
-            log(1, 'socket_manager', `New browser window connected! ID: ${socket.id}`);
-            socket.on('disconnect', () => {
-                log(1, 'socket_manager', `Browser window closed! ID: ${socket.id}`);
-            });
-        });
-
-        this.server.listen(5556, () => { log(1, 'socket_manager', `Socket listening on *:5556`) });
+        this.server.listen(5556, () => { log(1, 'socket_manager', `Dashboard running on http://localhost:5556`) });
     }
 }

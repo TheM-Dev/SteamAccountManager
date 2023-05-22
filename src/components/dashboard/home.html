@@ -12,6 +12,9 @@
     <body class="bg-gray-900 overflow-hidden">
         <script>
             var socket = io();
+            function requestProfile(steamID){
+                socket.emit('request_profile', steamID);
+            }
         </script>
         <div class="flex flex-col items-center justify-center h-screen">
             <h1 class="text-4xl text-white mb-16">Steam Account Manager</h1>

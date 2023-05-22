@@ -18,6 +18,7 @@ const handleOffer = require('./handlers/tradeoffers');
 module.exports = class Account {
     constructor(account){
 
+        this.account = account;
         this.client = new SteamUser();
         this.community = new SteamCommunity();
         this.manager = new TradeOfferManager({
@@ -39,7 +40,10 @@ module.exports = class Account {
 
         this.client.logOn(this.logOnOptions);
 
-        this.client.on('loggedOn', () => login(this.client, account));
+        this.client.on('loggedOn', () => {
+            this.steamID64 = this.client.steamID.getSteamID64();
+            login(this.client, account);
+        });
         this.client.on('error', (err) => error(err, this.client, this.logOnOptions, account));
         this.client.chat.on('friendMessage', (msg) => message(msg, this.client));
         this.client.on('friendRelationship', (steamID, rel) => friend(steamID, rel, client));
