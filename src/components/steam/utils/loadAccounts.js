@@ -4,7 +4,7 @@ const log = require('../../../utils/log');
 
 module.exports = async () => {
     const commandsPath = path.join(__dirname, '../../../accounts');
-    const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+    const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js')).filter(file => !file.includes('example'));
 
     let accounts = [];
 
