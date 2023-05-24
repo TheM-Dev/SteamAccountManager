@@ -6,7 +6,7 @@ const log = require('../../utils/log');
 const bodyParser = require('body-parser');
 
 module.exports = class SocketServer {
-    constructor(){
+    constructor(PORT){
         this.app = express();
         this.server = http.createServer(this.app);
         this.io = new Server(this.server);
@@ -30,6 +30,6 @@ module.exports = class SocketServer {
             res.sendFile(path.join(__dirname, '../dashboard/games.html'));
         });
 
-        this.server.listen(5556, () => { log(1, 'socket_manager', `Dashboard running on http://localhost:5556`) });
+        this.server.listen(PORT, () => { log(1, 'socket_manager', `Dashboard running on http://localhost:${PORT}`) });
     }
 }

@@ -8,6 +8,7 @@ const SteamTotp = require('steam-totp');
 const SteamCommunity = require('steamcommunity');
 const TradeOfferManager = require('steam-tradeoffer-manager');
 const SteamID = require('steamid');
+const axios = require('axios');
 
 const message = require('./handlers/message');
 const login = require('./handlers/login');
@@ -42,6 +43,9 @@ module.exports = class Account {
 
         this.client.on('loggedOn', () => {
             this.steamID64 = this.client.steamID.getSteamID64();
+            axios.get(`https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${process.env.STEAMAPIKEY}&steamids=${this.steamID64}`)
+                .then(res => this.profileDetails = res.data.response.players[0])
+                .catch(err => log(2, 'AXIOS_MODULE', `Error: ${err.message}`));
             login(this.client, account);
         });
         this.client.on('error', (err) => error(err, this.client, this.logOnOptions, account));
