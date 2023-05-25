@@ -12,37 +12,39 @@
     <body onload="javascript:requestAccounts()" class="bg-gray-900 overflow-hidden">
         <script>
 
-            const socket = io();
-
             function requestAccounts(){
-                socket.emit('request_accounts', 'accounts');
+                fetch(`http://localhost:5557/get/accounts`)
+                    .then((response) => response.json())
+                    .then((accounts) => {
+                        console.log(accounts)
+                        let table = document.querySelector('#accTable');
+                        let tr = document.createElement('tr');
+                        accounts.forEach(a => {
+                            let tds = [
+                                document.createElement('td'),
+                                document.createElement('td'),
+                                document.createElement('td'),
+                                document.createElement('td'),
+                                document.createElement('td'),
+                                document.createElement('td'),
+                            ];
+                            tds[0].innerHTML = `<button class="bg-transparent w-6 h-6"><img class="bg-transparent w-6 h-6 rounded-full block" src="${a.profileDetails?.avatarfull}" alt="Avatar"></button>`;
+                            tds[0].className = 'text-center';
+                            tds[1].innerHTML = a.login;
+                            tds[1].className = 'text-center';
+                            tds[2].innerHTML = `<a href="https://steamcommunity.com/profiles/${a.profileDetails?.steamid}"><button class="bg-transparent w-6 h-6"><img src="https://i.imgur.com/U7Zp5Nb.png" alt="Steam Logo"></button></a>`;
+                            tds[2].className = 'text-center';
+                            tds[3].innerHTML = `<button class="bg-transparent w-6 h-6"><img src="https://i.imgur.com/fqrhB54.png" alt="Key Icon"></button>`;
+                            tds[3].className = 'text-center';
+                            tds[4].innerHTML = `<button class="bg-transparent w-6 h-6"><img src="https://i.imgur.com/xnmRNgX.png" alt="Gamepad Icon"></button>`;
+                            tds[4].className = 'text-center';
+                            tds[5].innerHTML = `<button class="bg-transparent w-6 h-6"><span class="rounded-full bg-green-500 w-5 h-5 block"></span></button>`;
+                            tds[5].className = 'text-center';
+                            tds.forEach(td => tr.appendChild(td));
+                        });
+                        table.appendChild(tr);
+                    });
             }
-
-            socket.on('accounts_update', function(accounts) {
-                let table = document.querySelector('#accTable');
-                let tr = document.createElement('tr');
-                accounts.forEach(a => {
-                    let tds = [
-                        document.createElement('td'),
-                        document.createElement('td'),
-                        document.createElement('td'),
-                        document.createElement('td'),
-                        document.createElement('td'),
-                    ];
-                    tds[0].innerHTML = a.login;
-                    tds[0].className = 'text-center';
-                    tds[1].innerHTML = `<button class="bg-transparent w-6 h-6"><img href="https://steamcommunity.com/profiles/${a.ID}" src="https://i.imgur.com/U7Zp5Nb.png" alt="Steam Logo"></button>`;
-                    tds[1].className = 'text-center';
-                    tds[2].innerHTML = `<button class="bg-transparent w-6 h-6"><img src="https://i.imgur.com/fqrhB54.png" alt="Key Icon"></button>`;
-                    tds[2].className = 'text-center';
-                    tds[3].innerHTML = `<button class="bg-transparent w-6 h-6"><img src="https://i.imgur.com/xnmRNgX.png" alt="Gamepad Icon"></button>`;
-                    tds[3].className = 'text-center';
-                    tds[4].innerHTML = `<button class="bg-transparent w-6 h-6"><span class="rounded-full bg-green-500 w-5 h-5 block"></span></button>`;
-                    tds[4].className = 'text-center';
-                    tds.forEach(td => tr.appendChild(td));
-                });
-                table.appendChild(tr);
-            });
 
         </script>
         <div class="flex flex-col items-center pt-16">
@@ -59,6 +61,7 @@
             <table class="table table-dark">
                 <thead>
                     <tr>
+                        <th scope="col" class="text-center">Avatar</th>
                         <th scope="col" class="text-center">Account Name</th>
                         <th scope="col" class="text-center">Steam</th>
                         <th scope="col" class="text-center">Guard</th>
@@ -69,6 +72,9 @@
                 <tbody id="accTable">
                 </tbody>
             </table>
+        </div>
+        <div class="flex mb-8">
+            <a href="/generate"><button class="bg-gray-900 text-white text-lg px-4 py-2 mr-2 border-b-2 border-transparent hover:border-white">Add new account</button></a>
         </div>
     </body>
 </html>

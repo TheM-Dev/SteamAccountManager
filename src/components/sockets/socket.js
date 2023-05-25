@@ -30,6 +30,10 @@ module.exports = class SocketServer {
             res.sendFile(path.join(__dirname, '../dashboard/games.html'));
         });
 
+        this.app.get('/generate', this.loggingMiddleware, (req, res) => {
+            res.sendFile(path.join(__dirname, '../dashboard/generate.html'));
+        });
+
         this.server.listen(PORT, () => { log(1, 'socket_manager', `Dashboard running on http://localhost:${PORT}`) });
     }
 }

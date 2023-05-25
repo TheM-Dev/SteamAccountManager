@@ -1,5 +1,6 @@
 const log = require('../../../utils/log');
 const { errorCodes } = require('../utils/enums');
+const SteamTotp = require('steam-totp');
 
 module.exports = (err, client, logOnOptions, account) => {
     switch(err){

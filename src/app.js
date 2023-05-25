@@ -15,6 +15,9 @@ server.app.get('/api/accounts', server.loggingMiddleware, (req, res) => {
 const socketServer = require('./components/sockets/socket');
 const sockets = new socketServer(5556);
 
+const accHandler = require('./components/steam/accountHandler');
+const accountHandler = new accHandler();
+
 sockets.io.on('connection', (socket) => {
     log(1, 'socket_manager', `New browser window connected! ID: ${socket.id}`);
     
@@ -22,12 +25,4 @@ sockets.io.on('connection', (socket) => {
         log(1, 'socket_manager', `Browser window closed! ID: ${socket.id}`);
     });
 
-    socket.on('request_accounts', (data) => {
-        log(1, 'socket_manager', `Account list requested by /${data}`);
-        socket.emit('accounts_update', accountsIDs);
-    });
-
 });
-
-const accHandler = require('./components/steam/accountHandler');
-const accountHandler = new accHandler();
