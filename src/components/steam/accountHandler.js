@@ -21,9 +21,17 @@ module.exports = class accHandler {
                     login: acc.logOnOptions.accountName,
                     password: acc.logOnOptions.password,
                     steamID64: acc.steamID64,
-                    profileDetails: acc.profileDetails
+                    profileDetails: acc.profileDetails,
+                    accountSettingsFile: acc.account
                 });
             });
+        }
+
+        this.getAccountGuard = async (login) => {
+            if(login == undefined) return;
+            let account = this.accounts.filter(acc => acc.logOnOptions.accountName == login);
+            let guard = account[0].generateGuard();
+            return guard;
         }
 
         setInterval(() => {
@@ -33,7 +41,8 @@ module.exports = class accHandler {
                     login: acc.logOnOptions.accountName,
                     password: acc.logOnOptions.password,
                     steamID64: acc.steamID64,
-                    profileDetails: acc.profileDetails
+                    profileDetails: acc.profileDetails,
+                    accountSettingsFile: acc.account
                 });
             });
         }, 30000);
@@ -43,6 +52,11 @@ module.exports = class accHandler {
 
         this.sio.app.get('/get/accounts', this.sio.loggingMiddleware, (req, res) => {
             res.json(this.accountsDisplay);
+        });
+
+        this.sio.app.get('/get/guard/:accountLogin', this.sio.loggingMiddleware, async (req, res) => {
+            let guard = await this.getAccountGuard(req.params.accountLogin);
+            res.json({ guard });
         });
     }
 }

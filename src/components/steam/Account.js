@@ -39,7 +39,14 @@ module.exports = class Account {
         }
         if(account.sharedSecret) this.logOnOptions.twoFactorCode = SteamTotp.generateAuthCode(account.sharedSecret);
 
-        this.client.logOn(this.logOnOptions);
+        this.generateGuard = () => { return SteamTotp.generateAuthCode(this.account.sharedSecret); }
+
+        this.loginToSteam = () => {
+            if(account.sharedSecret) this.logOnOptions.twoFactorCode = this.generateGuard();
+            this.client.logOn(this.logOnOptions);
+        }
+
+        this.loginToSteam();
 
         this.client.on('loggedOn', () => {
             this.steamID64 = this.client.steamID.getSteamID64();
@@ -48,8 +55,8 @@ module.exports = class Account {
                 .catch(err => log(2, 'AXIOS_MODULE', `Error: ${err.message}`));
             login(this.client, account);
         });
-        this.client.on('error', (err) => error(err, this.client, this.logOnOptions, account));
-        this.client.chat.on('friendMessage', (msg) => message(msg, this.client));
+        this.client.on('error', (err) => error(err, this.client, this.logOnOptions, account, this));
+        this.client.chat.on('friendMessage', (msg) => message(msg, this.client, this.account.masterID));
         this.client.on('friendRelationship', (steamID, rel) => friend(steamID, rel, client));
         this.client.on('webSession', (sessionid, cookies) => websession(sessionid, cookies, this.client, this.manager, this.community, account));
         this.manager.on('newOffer', (Offer) => handleOffer(Offer, this.client, this.manager, this.community, account))

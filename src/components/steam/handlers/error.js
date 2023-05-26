@@ -2,7 +2,7 @@ const log = require('../../../utils/log');
 const { errorCodes } = require('../utils/enums');
 const SteamTotp = require('steam-totp');
 
-module.exports = (err, client, logOnOptions, account) => {
+module.exports = (err, client, logOnOptions, account, accObj) => {
     switch(err){
         case "Error: RateLimitExceeded":
             log(2, 'steam_login', `Couldnt log-in! Error: Rate Limit Exceeded`, account.login);
@@ -33,8 +33,7 @@ module.exports = (err, client, logOnOptions, account) => {
             let otherErrorsCooldown = Math.floor(Math.random() * (120 - 60 + 1)) + 60;
             log(3, 'steam_login', `Retrying in ${otherErrorsCooldown} seconds!`, account.login);
             setTimeout(() => {
-                if(account.sharedSecret) logOnOptions.twoFactorCode = SteamTotp.generateAuthCode(account.sharedSecret);
-                client.logOn(logOnOptions);
+                accObj.loginToSteam();
             }, otherErrorsCooldown * 1000);
     }
 }
