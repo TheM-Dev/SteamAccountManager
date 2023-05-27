@@ -1,4 +1,5 @@
-const pm2 = require('pm2')
+const pm2 = require('pm2');
+const axios = require('axios');
 
 pm2.connect(async function(err) {
     if (err) {
@@ -18,7 +19,11 @@ pm2.connect(async function(err) {
     setInterval(() => {
         pm2.describe('steamaccountmanager', function(err, proc) {
             if(err) return err;
-            console.log(`Process is using ${(proc[0].monit?.memory / 1000000).toFixed(1)}MB of memory and ${(proc[0].monit?.cpu).toFixed(1)}% of CPU!`)
+            axios.post(`http://localhost:5555/statuses/process/update`, {
+                cpu: (proc[0].monit?.cpu).toFixed(1),
+                memory: (proc[0].monit?.memory / 1000000).toFixed(1)
+            })
+            .catch(function (error) { console.log(error); });
         });
     }, 1000);
 });

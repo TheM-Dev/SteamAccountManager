@@ -45,6 +45,18 @@
                         acctext.innerHTML = `Accounts Running: ${accounts.length}`;
                     });
             }
+            function refreshProcessStatus(){
+                fetch(`http://localhost:5555/statuses/process`)
+                    .then((response) => response.json())
+                    .then((processData) => {
+                        let memText = document.querySelector('#memory-text');
+                        let cpuText = document.querySelector('#cpu-text');
+                        memText.innerHTML = `Memory Usage: ${processData.MEMORY}MB`;
+                        cpuText.innerHTML = `CPU Usage: ${processData.CPU}%`;
+                    });
+            }
+
+            setInterval(refreshProcessStatus, 1000);
         </script>
         <div class="flex flex-col items-center pt-16">
             <div class="flex mb-8">
@@ -57,49 +69,32 @@
         </div>
         <div class="container mx-auto flex items-center justify-center">
             <div class="w-5/6 sm:w-4/6 md:w-3/6 bg-gray-800 rounded-lg shadow-lg p-8">
-                <div class="flex">
+                <div class="flex pl-2">
                     <div class="w-1/2">
                         <p class="text-white font-size-xxl"><b>Dashboard</b></p>
                     </div>
                     <div class="w-full ml-4 pl-36">
-                        <p class="text-white">CPU Usage: xx%</p>
-                        <p class="text-white">Memory Usage: xxxMB</p>
+                        <p id="cpu-text" class="text-white">CPU Usage: 0%</p>
+                        <p id="memory-text" class="text-white">Memory Usage: 0MB</p>
                         <p id="accounts-text" class="text-white">Accounts Running: 0</p>
                     </div>
                 </div>
-                <div class="mt-2">
-                    <div class="flex">
-                        <div class="w-1/2">
-                            <table class="table table-dark">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" class="text-center">Account Name</th>
-                                        <th scope="col" class="text-center">Steam</th>
-                                        <th scope="col" class="text-center">Guard</th>
-                                        <th scope="col" class="text-center">Idle</th>
-                                        <th scope="col" class="text-center">ON/OFF</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="accTable">
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="w-1/2 pl-4">
-                            <div class="flex flex-wrap">
-                                <div class="w-1/2 p-1">
-                                    <button class="btn btn-primary mb-2 w-full">Enable/Disable</button>
-                                </div>
-                                <div class="w-1/2 p-1">
-                                    <button class="btn btn-primary mb-2 w-full">Restart</button>
-                                </div>
+                <div class="mt-8">
+                    <div class="w-full">
+                        <div class="flex flex-wrap">
+                            <div class="w-1/2 p-1">
+                                <button class="btn btn-primary mb-2 w-full">Enable/Disable</button>
                             </div>
-                            <div class="flex flex-wrap">
-                                <div class="w-1/2 p-1">
-                                    <button class="btn btn-primary mb-2 w-full">Reset</button>
-                                </div>
-                                <div class="w-1/2 p-1">
-                                    <button onclick="location.href = '/accounts';" class="btn btn-primary w-full">Manage Accounts</button>
-                                </div>
+                            <div class="w-1/2 p-1">
+                                <button class="btn btn-primary mb-2 w-full">Restart</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap">
+                            <div class="w-1/2 p-1">
+                                <button class="btn btn-primary mb-2 w-full">Reset</button>
+                            </div>
+                            <div class="w-1/2 p-1">
+                                <button onclick="location.href = '/accounts';" class="btn btn-primary w-full">Manage Accounts</button>
                             </div>
                         </div>
                     </div>

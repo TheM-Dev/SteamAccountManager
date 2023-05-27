@@ -4,6 +4,7 @@ const express = require('express');
 const { Server } = require("socket.io");
 const log = require('../../utils/log');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 module.exports = class SocketServer {
     constructor(PORT){
@@ -11,6 +12,7 @@ module.exports = class SocketServer {
         this.server = http.createServer(this.app);
         this.io = new Server(this.server);
         this.app.use(bodyParser.json());
+        this.app.use(cors());
 
         this.loggingMiddleware = (req, res, next) => { log(0, 'web_server', `New request on ${req.url}`); next() };
 

@@ -12,9 +12,8 @@ server.app.post('/statuses/process/update', server.loggingMiddleware, (req, res)
     MEMORY = req.body.memory;
     res.sendStatus(200)
 });
-server.app.ge('/statuses/process', server.loggingMiddleware, (req, res) => {
-    let { cpu, memory } = req.body;
-    res.sendStatus(200)
+server.app.get('/statuses/process', server.loggingMiddleware, (req, res) => {
+    res.json({ CPU, MEMORY });
 });
 server.app.get('/api/accounts', server.loggingMiddleware, (req, res) => {
     res.json(accounts);
